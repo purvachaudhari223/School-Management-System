@@ -78,7 +78,13 @@ class StudentSerializer(serializers.ModelSerializer):
     #bday = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Student
-        fields = "__all__"
+        fields = (
+            "id", "addmission_number", "first_name", "middle_name", "last_name", "sex", 
+            "grade_level", "class_level", "class_of_year", 
+            "std_vii_number", "prems_number", "birthday", "parent_guardian", 
+            "region", "city", "street", "post_code",
+            "parent_email", "notes", "emergency_contacts", "siblings"
+            )
 
     def get_grade_level(self, obj):
         grade_level = obj.grade_level
