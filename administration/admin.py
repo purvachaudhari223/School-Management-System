@@ -4,6 +4,6 @@ from .models import *
 
 admin.site.register(Article)
 admin.site.register(CarouselImage)
-admin.site.register(ClassTeacher)
-admin.site.register(ClassSection)
-admin.site.register(ClassJournal)
+admin.site.register(School)
+admin.site.register(Day)
+admin.site.register(AcademicYear)

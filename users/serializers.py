@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-from .models import Accountant, Teacher, CustomUser
+from .models import Accountant, CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField(read_only=True)
@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'username', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'isAccountant', 'isTeacher', 'isParent', 'phone_number']
+        fields = ['id', 'email', 'username', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'isAccountant', 'isTeacher', 'isParent']
 
     def get_isAdmin(self, obj):
         return obj.is_staff
@@ -59,33 +59,7 @@ class UserSerializerWithToken(UserSerializer):
             return {'isParent': isParent}
 
 class AccountantSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Accountant
         fields = "__all__"
-
-    def get_user(self, obj):
-        user = obj.user
-        serializer = UserSerializer(user, many=False)
-        user = serializer.data['first_name'] + ' ' + serializer.data['last_name']
-        return user
-
-
-class AccountantSerializerWithToken(AccountantSerializer):
-    token = serializers.SerializerMethodField(read_only=True)
-
-    class Meta:
-        model = Accountant
-        fields = ['id', 'email', 'first_name', 'middle_name', 'last_name', 'isAccountant', 'token']
-
-    def get_token(self, obj):
-        token = RefreshToken.for_user(obj)
-        return str(token.access_token)
-
-
-class TeacherSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Teacher
-        fields = "__all__"
-
